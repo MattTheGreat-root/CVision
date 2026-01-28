@@ -18,12 +18,6 @@ uvicorn app.main:app --reload
 
 Open `http://localhost:8000` and upload a PDF.
 
-## Troubleshooting
-
-If you see an error like `Directory '.../app/static' does not exist`, make sure the
-`app/static` folder exists (it is included in the repo). This directory is required
-by the FastAPI static file mount in `app/main.py`.
-
 ## Configuration
 
 - `CVISION_ANALYZER` (default: `heuristic`): choose the analysis backend. Supports `heuristic` and `ollama`.

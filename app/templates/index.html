@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CVision</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fb;
+        color: #1f2933;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #ffffff;
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(31, 41, 51, 0.08);
+      }
+      h1 {
+        margin-top: 0;
+        font-size: 2.2rem;
+      }
+      form {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      input[type="file"] {
+        border: 1px solid #cbd2d9;
+        padding: 10px;
+        border-radius: 8px;
+        background: #f9fafb;
+      }
+      button {
+        background: #1f5eff;
+        color: #ffffff;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button:hover {
+        background: #1649d4;
+      }
+      .error {
+        margin-top: 16px;
+        padding: 12px 16px;
+        background: #ffe3e3;
+        color: #721c24;
+        border-radius: 8px;
+      }
+      .score {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1f5eff;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+        margin-top: 24px;
+      }
+      .card {
+        background: #f8f9fc;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #e4e7eb;
+      }
+      ul {
+        padding-left: 18px;
+      }
+      .meta {
+        color: #52606d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>CVision</h1>
+      <p class="meta">
+        Upload a PDF CV to get instant feedback on weaknesses, improvements, and an overall score.
+      </p>
+
+      <form action="/analyze" method="post" enctype="multipart/form-data">
+        <input type="file" name="cv_file" accept="application/pdf" required />
+        <button type="submit">Analyze CV</button>
+      </form>
+
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+
+      {% if analysis %}
+      <div class="grid">
+        <div class="card">
+          <h2>Overall Score</h2>
+          <p class="score">{{ analysis.score }}/100</p>
+          {% if word_count %}
+          <p class="meta">Word count: {{ word_count }}</p>
+          {% endif %}
+        </div>
+        <div class="card">
+          <h2>Weaknesses</h2>
+          <ul>
+            {% for item in analysis.weaknesses %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Improvements</h2>
+          <ul>
+            {% for item in analysis.improvements %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
